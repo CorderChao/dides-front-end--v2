@@ -1,94 +1,143 @@
-<app-headings [title]="title" [useBackButton]="false"></app-headings>
+<div class="col-xxl-12">
+  <div class="card">
+    <div class="card-body">
       <!-- Nav tabs -->
-    <ul ngbNav #ModifierCustom="ngbNav" [activeId]="1" class="nav nav-pills nav-customs nav-danger mb-3">
+      <ul ngbNav #ModifierCustom="ngbNav" [activeId]="1" class="nav nav-pills nav-customs nav-danger mb-3">
         <li [ngbNavItem]="1">
           <a ngbNavLink class="nav-link">
-           GOVERNMENT'S EMPLOYEES
+            EMPLOYEES
           </a>
           <ng-template ngbNavContent>
-            <div class="card">
-              <div class="card-body">
-                <app-data-table
-                  [columnHeader]="tableColumns"
-                  [hasActionsColumn]="true"
-                  [tableData]="users"
-                >
-                  <ng-template #actions let-data="data">
-                    <app-actions-menu>
-                      <app-actions-button
-                        [btnIcon]="'edit'"
-                        [btnText]="'Edit'"
-                        (click)="edit(data)"
-                      >
-                      </app-actions-button>
-                    
-                      <app-actions-button
-                        *ngIf="data.status == 'Active'"
-                        [btnIcon]="'trash'"
-                        [btnText]="'Reset Password'"
-                        (click)="reset_password(data)"
-                      >
-                      </app-actions-button>
-                    </app-actions-menu>
-                  </ng-template>
-            
-                  <div class="contents" toolbar-content>
-                    <app-button
-                      (clicked)="openDialog()"
-                      buttonName="Add User"
-                      _icon="ri-add-line align-bottom me-1"
-                    ></app-button>
-                  </div>
-                </app-data-table>
+            <!-- add button -->
+            <div class="col-sm-auto">
+              <div class="d-flex justify-content-end gap-1">
+                <button type="button" class="btn btn-primary add-btn" id="create-btn" (click)="createEmployee()">
+                  <i class="ri-add-fill align-center me-1" style="
+                                font-size: 1rem;"></i> ADD EMPLOYEE
+                </button>
               </div>
             </div>
+            <!-- table -->
+            <data-table [columns]="columns" [items]="employees" [sort]="true" caption="List of Registered Users"
+              subTitle="">
+        <ng-template pTemplate="sex" let-item>
+
+                  {{ item.sex === true ? "Male" : "Female" }}
+             
+              </ng-template>
+              <ng-template pTemplate="status" let-item>
+                <i class="{{
+                              item.enabled
+                                ? 'ri-checkbox-circle-fill text-success'
+                                : 'ri-close-circle-fill text-danger'
+                            }} align-middle "></i>
+                <span class="{{ item.enabled === true ? 'text-success' : 'text-danger' }}">
+                  {{ item.enabled === true ? "Active" : "Disabled" }}
+                </span>
+              </ng-template>
+
+              <ng-template pTemplate="locked" let-item>
+                <i class="{{
+                              item.locked
+                                ? 'ri-checkbox-circle-line text-success'
+                                : 'ri-close-circle-line text-danger'
+                            }} align-middle "></i>
+
+                <span class="{{ item.locked ? 'text-success' : 'text-danger' }}">
+                  {{ item.locked ? "Locked" : "Unlocked" }}
+                </span>
+              </ng-template>
+
+                 <ng-template pTemplate="actions" let-item let-index>
+                <button  [matMenuTriggerFor]="menu" mat-icon-button> 
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="updateEmployee(item)">
+                    <mat-icon color="primary">edit</mat-icon>Manage User
+                  </button>
+               
+                  <!-- <button mat-menu-item (click)="managePermission(item)">
+                    <mat-icon color="accent">list</mat-icon>Manage User Roles
+                  </button> -->
+               
+                </mat-menu>
+                </ng-template>
+            </data-table>
+
           </ng-template>
         </li>
         <li [ngbNavItem]="2">
           <a ngbNavLink class="nav-link">
-           CONSULTANCY EMPLOYEES
+            COLLECTORS
           </a>
           <ng-template ngbNavContent>
-            <div class="card">
-              <div class="card-body">
-                <app-data-table
-                  [columnHeader]="tableColumns2"
-                  [hasActionsColumn]="true"
-                  [tableData]="agentsUsers"
-                >
-                  <ng-template #actions let-data="data">
-                    <app-actions-menu>
-                      <app-actions-button
-                        [btnIcon]="'edit'"
-                        [btnText]="'Edit'"
-                        (click)="edit(data)"
-                      >
-                      </app-actions-button>
-                    
-                      <app-actions-button
-                        *ngIf="data.status == 'Active'"
-                        [btnIcon]="'trash'"
-                        [btnText]="'Reset Password'"
-                        (click)="reset_password(data)"
-                      >
-                      </app-actions-button>
-                    </app-actions-menu>
-                  </ng-template>
-            
-                  <div class="contents" toolbar-content>
-                    <app-button
-                      (clicked)="openDialog2()"
-                      buttonName="Add User"
-                      _icon="ri-add-line align-bottom me-1"
-                    ></app-button>
-                  </div>
-                </app-data-table>
+            <div class="col-sm-auto">
+              <div class="d-flex justify-content-end gap-1">
+                <button type="button" class="btn btn-primary add-btn" id="create-btn" (click)="createCollector()">
+                  <i class="ri-add-fill align-center me-1" style="
+                                font-size: 1rem;"></i> ADD COLLECTOR
+                </button>
               </div>
             </div>
+            <!-- table -->
+            <data-table [columns]="collectorColumn" [items]="users" [sort]="true" caption="List of Registered Collectors"
+              subTitle="">
+            <ng-template pTemplate="sex" let-item>
+
+                  {{ item.sex === true ? "Male" : "Female" }}
+             
+              </ng-template>
+              <ng-template pTemplate="status" let-item>
+                <i class="{{
+                              item.enabled
+                                ? 'ri-checkbox-circle-fill text-success'
+                                : 'ri-close-circle-fill text-danger'
+                            }} align-middle "></i>
+                <span class="{{ item.enabled ? 'text-success' : 'text-danger' }}">
+                  {{ item.enabled ? "Active" : "Disabled" }}
+                </span>
+              </ng-template>
+
+               <ng-template pTemplate="collectorActions" let-item let-index>
+                <button  [matMenuTriggerFor]="menu" mat-icon-button> 
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="updateCollector(item)">
+                    <mat-icon color="primary">edit</mat-icon>Edit Collector
+                  </button>
+                  <button mat-menu-item (click)="viewCollectionSite(item)">
+                    <mat-icon color="primary">visibility</mat-icon>View Collector Site
+                  </button>
+                  <button
+                  mat-menu-item
+                  (click)="assignCollectionSites(item)"
+                >
+                  <mat-icon color="primary">add_task</mat-icon>Assign
+                  Collection Site
+                </button>
+
+                  <button mat-menu-item (click)="remove_collection_site(item)">
+                    <mat-icon color="accent">remove_circle</mat-icon>Remove collection site
+                  </button>
+               
+                  <!-- <button mat-menu-item (click)="managePermission(item)">
+                    <mat-icon color="accent">list</mat-icon>Manage User Roles
+                  </button> -->
+               
+                </mat-menu>
+                </ng-template>
+            </data-table>
           </ng-template>
         </li>
-      </ul> 
-     <div class="tab-content text-muted">
+    
+      </ul>
+      <div class="tab-content text-muted">
         <div [ngbNavOutlet]="ModifierCustom"></div>
       </div>
-  
+    </div><!-- end card-body -->
+  </div>
+</div><!--end col-->

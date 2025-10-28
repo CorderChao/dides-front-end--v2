@@ -9,10 +9,10 @@
       "TEXT": "MENU"
     },
     "AUTHORIZATION": {
-      "TEXT": "Authorization",
+      "TEXT": "User Management",
       "BADGE": "New",
       "LIST": {
-        "USERMANAGEMENT": "User Management",
+        "USERMANAGEMENT": "User's Accounts",
         "MENUMANAGEMENT": "Menu Management",
         "ROLESMANAGEMENT": "Roles Management",
         "ROLESMAPPINGS": "Roles Mappings"
@@ -32,61 +32,24 @@
         "JOB": "Job"
       }
     },
-    "PROJECTS": {
-      "TEXT": "Projects List",
-      "BADGE": "New",
+    "BILLING": {
+      "TEXT": "Billing Management",
       "LIST": {
-        "LISTOFPROJECTS": {
-          "TEXT": "Projects",
-          "LIST": {
-           
-          }
-        },
-        "PACKAGES": {
-          "TEXT": "Packages",
-          "LIST": {
-           
-          }
-        },
-        "SUBPROJECTS": {
-          "TEXT": "Sub Projects",
-          "LIST": {
-           
-          }
-        }  
       }
-    },
-    "SETTINGS": {
-      "TEXT": "System Settings",
-      "LIST": {
-       
-      }
-    },
-    "OVERVIEW": {
-      "TEXT": "Overview",
-      "LIST": {
-       
-      }
-    },
-    "MAP": {
-      "TEXT": "Map",
-      "LIST": {
-       
-      }
-    },
-
-  
-    "FIELDNOTES": {
-      "TEXT": "Field Notes",
-      "LIST": {
-       
-      }
-    },
-    "OHSANDSAFEGUARD": {
-      "TEXT": "OHS and Safeguards",
-      "LIST": {
-       
-      }
+   },
+   "SCANS": {
+    "TEXT": "Scans Management",
+    "LIST": {
+    }
+ },
+   "POS": {
+    "TEXT": "Device Management",
+    "LIST": {
+    }
+ },
+    "REPORTS": {
+      "TEXT": "Reports",
+      "LIST": {}
     },
     "AUTHENTICATION": {
       "TEXT": "Authentication",

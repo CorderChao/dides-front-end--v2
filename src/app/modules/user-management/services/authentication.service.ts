@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { StorageService } from '../../shared/services/storage.service';
 import { environment } from 'src/environments/environment.prod';
+import { ToastService } from '../../shared/services/toast.service';
 import { StorageKey } from './storage.model';
-import { ToastService } from 'src/app/shared/services/toast.service';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 
 @Injectable({
@@ -14,7 +14,8 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 })
 
 export class AuthenticationService {
-  private readonly baseUrl: string =  `${environment.BASE_API}/api/v1`;
+  private readonly baseUr: string = `${environment.BASE_API}:8083/api/v1/`;
+  private readonly baseUrl: string =  `${environment.BASE_API}:8089`;
 
   token: string;
   errorCode: any;
@@ -24,6 +25,7 @@ export class AuthenticationService {
 
 
   constructor(
+    private storageSvc: StorageService,
     private toastSvc: ToastService,
     private httpClientSvc: HttpClient,
     private router: Router  ) { }
@@ -44,14 +46,13 @@ export class AuthenticationService {
     .set('username', username)
     .set('password', password);
 
-    return this.httpClientSvc.post<any>(`${this.baseUrl}/oauth2/token`, body, {headers});
+    return this.httpClientSvc.post<any>(`${this.baseUrl}/api/v1/oauth2/token`, body, {headers});
 
   }
 
-
-  
-
-
+  public changePassword(id: any, body: any): Observable<any>{
+    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/api/v1/user/users/${id}/profile`, body);
+  }
   
   /**
    * logout
@@ -62,6 +63,10 @@ export class AuthenticationService {
     this.currentUser = null;
     this.expire = null;
     this.refreshToken = '';
+    this.storageSvc.remove(StorageKey.AUTH_TOKEN);
+    this.storageSvc.remove(StorageKey.CURRENT_USER);
+    this.storageSvc.remove(StorageKey.REFRESH_TOKEN);
+    this.storageSvc.remove(StorageKey.EXPIRE);
     localStorage.removeItem('currentClient');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('expireTime');
@@ -108,82 +113,69 @@ export class AuthenticationService {
   }
 
   public userInfo(): any {
-    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/user/user-info`)
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/api/v1/user/user-info`)
   }
 
   public orgInfo(id: any): any {
-    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/organizations/${id}`)
+    return this.httpClientSvc.get<any[]>(`${this.baseUr}organizations/${id}`)
   }
 
   public fetchAllUsers(): Observable<any>{
-    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/user/users`);
-  }
-
-  public fetchUser(id: string): Observable<any>{
-    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/user/users/${id}`);
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/api/v1/user/users`);
   }
 
   public fetchAllRolesPermissions(): Observable<any>{
-    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/roles`);
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/api/v1/roles`);
   }
 
   public getAllIdTypes(): Observable<any> {
     let type = "IDENTITY_TYPE";
-    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/common-config/${type}`);
+    return this.httpClientSvc.get<any[]>(`${this.baseUr}common-config/${type}`);
   }
 
   public getAllAdminlevel(): Observable<any> {
     let type = "ADMINISTRATION_LEVEL";
-    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/common-config/${type}`);
+    return this.httpClientSvc.get<any[]>(`${this.baseUr}common-config/${type}`);
   }
 
   public fetchAllPermissions(): Observable<any>{
-    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/permissions`);
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/api/v1/permissions`);
   }
 
   public saveRole(body: any): Observable<any>{
-    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/role`, body);
+    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/api/v1/role`, body);
   }
 
   public saveUser(body: any): Observable<any>{
-    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/user/save/users`, body);
+    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/api/v1/user/save/users`, body);
   }
 
   public saveUserRole(body: any): Observable<any>{
-    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/user/userRole`, body);
-  }
-
-  public changePassword(id: any, body: any): Observable<any>{
-    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/user/users/${id}/profile`, body);
-  }
-
-  public resetPassword(id: any): Observable<any>{
-    let payLoad = [];
-    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/user/users/${id}/password`, payLoad);
+    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/api/v1/user/userRole`, body);
   }
 
   public addPermissionsRole(body: any): Observable<any>{
-    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/saveRolePermission`, body);
+    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/api/v1/saveRolePermission`, body);
   }
 
   public deletePermissionsRole(body: any): Observable<any>{
-    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/deletePermission`, body);
+    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/api/v1/deletePermission`, body);
   }
 
   public deleteUserRole(userId: any, roleId: any): Observable<any>{
-    return this.httpClientSvc.delete<any[]>(`${this.baseUrl}/user/userRole/user/${userId}/${roleId}`);
+    return this.httpClientSvc.delete<any[]>(`${this.baseUrl}/api/v1/user/userRole/user/${userId}/${roleId}`);
   }
 
   public editRolePermission(id: any, body: any): Observable<any>{
-    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/role/${id}`, body);
+    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/api/v1/role/${id}`, body);
   }
 
   public editUser(id: any, body: any): Observable<any>{
-    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/user/users/${id}`, body);
+    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/api/v1/user/users/${id}`, body);
   }
 
   public deleteRolePermission(id: any, body: any): Observable<any>{
-    return this.httpClientSvc.delete<any[]>(`${this.baseUrl}/role/${id}`, body);
+    return this.httpClientSvc.delete<any[]>(`${this.baseUrl}/api/v1/role/${id}`, body);
   }
 
 }

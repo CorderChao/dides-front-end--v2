@@ -21,16 +21,7 @@
 }
 
 .page-content {
-    background-color: #fdfdfd;
     padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} * 0.5) $footer-height calc(#{$grid-gutter-width} * 0.5);
-}
-
-.sidebar-menu-scroll{
-    // border-top: 2px solid;
-    // border-radius: 1rem;
-    // border-color: rgba($color: #fff, $alpha: 0.7);
-    // padding-top: 15px;
-    box-shadow: -2px -17px 20px rgba(255, 255, 255, 0.2);
 }
 
 .navbar-menu {
@@ -42,7 +33,7 @@
     margin-top: 0;
     position: fixed;
     top: 0;
-    box-shadow: -3px 4px 20px 20px rgba($primary, 0.12);
+    box-shadow: var(--#{$prefix}vertical-menu-box-shadow);
     padding: 0 0 calc(#{$header-height} + 25px) 0;
     transition: all .1s ease-out;
 
@@ -51,22 +42,16 @@
             display: flex;
             align-items: center;
             padding: $vertical-menu-item-padding-y $vertical-menu-item-padding-x;
-            color: white;
+            color: var(--#{$prefix}vertical-menu-item-color);
             font-size: $vertical-menu-item-font-size;
             font-family: $vertical-menu-item-font-family;
-            border-bottom: 0.05rem dotted rgba($color: #fff, $alpha: 0.2);
-            transition: all .4s ease-out;
-            
 
             &.active {
                 color: var(--#{$prefix}vertical-menu-item-active-color);
-                background: rgba(#fcb91a, 0.5);
-                box-shadow: inset -1px 1px 4px 0px #808080;
             }
 
             &:hover {
                 color: var(--#{$prefix}vertical-menu-item-hover-color);
-                background: linear-gradient(to right, $primary, rgba(#fcb91a, 0.2));
             }
 
             i {
@@ -139,8 +124,6 @@
             }
         }
 
-
-
         .nav-sm {
             padding-left: $vertical-menu-item-icon-width;
 
@@ -175,8 +158,6 @@
 
                 &.active {
                     color: var(--#{$prefix}vertical-menu-item-active-color);
-                    background: linear-gradient(to right, $primary, rgba(#fcb91a, 0.2));
-                    box-shadow: inset -1px 1px 4px 0px #808080;
 
                     &:before {
                         background-color: var(--#{$prefix}vertical-menu-item-active-color);
@@ -210,24 +191,12 @@
 }
 
 .navbar-brand-box {
-    position: relative;
+    padding: 0 1.3rem;
     text-align: center;
     transition: all .1s ease-out;
-    padding: 4rem 0;
-    // height: 20vh !important;
-    // padding:  1.3rem 1.5rem;
-    // margin-top: 1.5rem;
 
     @media (max-width: 767.98px) {
         display: none;
-    }
-
-    .navbar-brand-box-internal{
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
     }
 }
 
@@ -541,9 +510,7 @@
 
     &[data-sidebar-size="sm"] {
         @media (min-width: 768px) {
-            .navbar-menu{
-                min-height: 100vh !important;
-            }
+            min-height: 1400px;
 
             .main-content {
                 margin-left: var(--#{$prefix}vertical-menu-width-sm);
@@ -556,13 +523,12 @@
 
         .navbar-brand-box {
             position: fixed;
-            padding: 3rem 0;
+            padding: 0;
             width: var(--#{$prefix}vertical-menu-width-sm);
             z-index: 1;
             top: 0;
             background-color: var(--#{$prefix}vertical-menu-bg);
         }
-
 
         .logo {
             span.logo-lg {
@@ -576,11 +542,9 @@
 
         // Side menu
         .navbar-menu {
-            // position: absolute;
-            position: fixed;
+            position: absolute;
             width: var(--#{$prefix}vertical-menu-width-sm) !important;
-            padding-top: 12rem;
-            // padding-top: $header-height;
+            padding-top: $header-height;
 
             .simplebar-mask,
             .simplebar-content-wrapper {
@@ -1008,25 +972,25 @@
 
     [data-sidebar-image="img-1"] {
         .sidebar-background {
-            background-image: url('../../images/sidebar/img-1.jpg');
+            // background-image: url('../../images/sidebar/img-1.jpg');
         }
     }
 
     [data-sidebar-image="img-2"] {
         .sidebar-background {
-            background-image: url('../../images/sidebar/img-2.jpg');
+            // background-image: url('../../images/sidebar/img-2.jpg');
         }
     }
 
-    [data-sidebar-image="img-3"] {
-        .sidebar-background {
-            background-image: url('../../images/sidebar/img-3.jpg');
-        }
-    }
+    // [data-sidebar-image="img-3"] {
+    //     .sidebar-background {
+    //         background-image: url('../../images/sidebar/img-3.jpg');
+    //     }
+    // }
 
     [data-sidebar-image="img-4"] {
         .sidebar-background {
-            background-image: url('../../images/sidebar/img-4.jpg');
+            // background-image: url('../../images/sidebar/img-4.jpg');
         }
     }
 

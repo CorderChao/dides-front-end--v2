@@ -504,8 +504,8 @@ $value in $theme-colors {
 
             &.active {
                 border-color: $primary;
-                background-color: transparent;
-                color: $primary;
+                // background-color: transparent;
+                color: $secondary;
             }
         }
     }

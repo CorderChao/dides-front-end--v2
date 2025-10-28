@@ -4,9 +4,6 @@
 
 
 // Breadcrumb item arrow
-.breadcrumb-main{
-    box-shadow:  -7px -5px 8px 0px $primary;
-}
 .breadcrumb-item {
     > a {
         color: var(--#{$prefix}body-color);

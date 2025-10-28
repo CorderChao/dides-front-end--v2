@@ -1,0 +1,136 @@
+.section {
+    margin: 0;
+    padding-top:  2%;
+    height: auto;
+    width: 100%;
+    background-size: cover;
+    overflow-x: hidden !important;
+}
+
+.display-8{
+    color:lightblue;
+}
+
+.display-10{
+    color: aliceblue;  
+}
+
+
+
+.profile-picture-container {
+    position: absolute;
+    top: 10%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid white;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    .profile-picture {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.card-1{
+    margin: 0;
+    padding: 0;
+    height: 40% !important;
+    width: 100%;
+    background-color: white !important;
+    overflow-x: hidden !important;
+}
+
+.wrapper{
+    height: 100% !important;
+    overflow: hidden !important;
+}
+
+.scrollbar-inner {
+    height: 100%;
+    overflow: auto;
+}
+
+.announcement-card {
+    background: lightgreen !important;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    
+    h5 {
+        color: #405189;
+        margin-bottom: 5px;
+    }
+}
+
+.cont{
+    width: 80%;
+    margin: 0 auto;
+}
+
+
+.custom-tab-group {
+  .mat-tab-label {
+    text-transform: uppercase;
+    opacity: 1;
+    color: rgba(0, 0, 0, 0.87); // Default text color for inactive tabs
+    font-weight: 500;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .mat-tab-label.mat-tab-label-active {
+    color: white !important;
+    background-color: var(--bs-primary) !important;
+    font-weight: 600;
+  }
+
+  .mat-ink-bar {
+    background-color: var(--bs-primary) !important;
+    height: 4px;
+  }
+}
+
+
+
+
+
+
+
+ @media (max-width: 768px) {
+
+    .welcome-text .text-yellow,
+    .white-text,
+    .bracket-text,
+    .blue-text {
+      font-size: 1.5rem;
+      margin-left: 5% !important;
+    }
+  }
+
+  @media (max-width: 576px) {
+
+    .welcome-text .text-yellow,
+    .white-text,
+    .bracket-text {
+      font-size: 2rem !important;
+      margin-left: 5% !important;
+    }
+  }
+
+    .text-yellow {
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    line-height: 0.5;
+    font-size: 2rem;
+    text-align: center;
+    color: #fcb91a !important;
+  }
+
+

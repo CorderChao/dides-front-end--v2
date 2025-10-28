@@ -2,9 +2,7 @@ import { Component } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { filter, map } from "rxjs";
-import { NgxHttpLoaderService, NgxLoader } from "ngx-http-loader";
 import { Spinkit } from "ng-http-loader";
-
 
 @Component({
   selector: "app-root",
@@ -14,18 +12,19 @@ import { Spinkit } from "ng-http-loader";
 export class AppComponent {
 
   public spinkit = Spinkit;
-  public opacity: string = '0.8';
+  public opacity: string = '0.5';
 
-  public loader = NgxLoader;
-  title = "dides";
+
+  title = "DIDES";
   constructor(
     private titleService: Title,
-    private service: NgxHttpLoaderService,
+
     private _router: Router,
-    private activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute
   ) {
     this.setPageTitlesFromRouters();
   }
+  
   setPageTitlesFromRouters() {
     const appTitle = this.titleService.getTitle();
     this._router.events
@@ -41,10 +40,10 @@ export class AppComponent {
           }
 
           return appTitle;
-        }),
+        })
       )
       .subscribe((ttl: string) => {
-        const title = ttl ? `DIDES | ${ttl}` : "dides";
+        const title = ttl ? `DIDES | ${ttl}` : "DIDES";
 
         this.titleService.setTitle(title);
       });

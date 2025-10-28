@@ -27,8 +27,6 @@
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
-    background-color: #f3f3f9 !important;
-    box-shadow:  -7px -5px 12px 0px #8080809c;
     height: $header-height;
     padding: 0 $grid-gutter-width 0 calc(#{$grid-gutter-width} * 0.5)
     /*rtl: 0 0 0 calc(#{$grid-gutter-width} * 0.5) */
@@ -40,7 +38,7 @@
 
     .topbar-head-dropdown {
         .dropdown-menu.show {
-            top: 13px !important;
+            top: px !important;
         }
 
         .notification-actions {

@@ -28,9 +28,19 @@
 }
 
 .avatar-xl {
-    height: 7.5rem;
-    width: 7.5rem;
+    height: 8.5rem;
+    width: 8.5rem;
+    border: 0.25rem solid $primary;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+   transition: transform 0.3s ease-in-out;
+   overflow: hidden;
+   cursor: pointer;
 }
+
+.avatar-xl:hover {
+    transform: scale(0.95);
+  }
 
 .avatar-title {
     align-items: center;

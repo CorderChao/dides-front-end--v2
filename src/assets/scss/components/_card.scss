@@ -4,35 +4,8 @@
 
 .card {
     margin-bottom: $grid-gutter-width;
-    margin-bottom: 1.5rem;
-    padding: 10px;
-    box-shadow: 0 1px 20px rgba(56, 65, 74, 0.15);
+    box-shadow: $card-box-shadow;
 }
-
-.card-listing{
-    border-top: 3px solid rgba($primary, 0.6);
-    border-top-left-radius: 0%;
-    border-top-right-radius: 0%;
-}
-
-.card-settings{
-    min-height: 8rem;
-    background: white;
-    cursor: pointer;
-    box-shadow:  -1px 1px 6px 0px rgba(64, 81, 137, 0.3);
-    color: $primary;
-    border-bottom: 4px solid $primary;
-    transition: all .5s ;
-    border-radius: 5px 5px 0px 0px;
-
-    &:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(64, 81, 137, 0.3);
-    }
-    i{
-      font-size: 1.5rem;
-    }
-  }
 
 .card-header {
     border-bottom: 1px solid var(--#{$prefix}border-color);

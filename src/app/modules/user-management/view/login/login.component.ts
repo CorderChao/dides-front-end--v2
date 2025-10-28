@@ -9,15 +9,14 @@ import {
 } from "@angular/forms";
 import { NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
 import { Router } from "@angular/router";
+import { FooterComponent } from "src/app/modules/shared/components/footer/footer/footer.component";
 import { AuthenticationService } from "../../services/authentication.service";
-import { ToastService } from "src/app/shared/services/toast.service";
-import { SharedModule } from "src/app/shared/shared.module";
-
+import { ToastService } from "src/app/modules/shared/services/toast.service";
 
 @Component({
   selector: "app-login",
   standalone: true,
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, NgbCarouselModule, ReactiveFormsModule, FormsModule, FooterComponent],
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.scss",
 })
@@ -48,7 +47,7 @@ export class LoginComponent implements OnInit {
 
   initForm = () => {
     this.loginForm = this.formBuilder.group({
-      username: ["", [Validators.required]],
+      name: ["", [Validators.required]],
       password: ["", Validators.required],
     });
   };
@@ -62,44 +61,43 @@ export class LoginComponent implements OnInit {
    * Form submit
    */
   onSubmit() {  
-    let userName = this.loginForm.value.username;
+    let userName = this.loginForm.value.name;
     let password = this.loginForm.value.password;
-
+    this.router.navigate(["/dashboards"]);
   //   this.authenticationSrvc.login(userName, password).subscribe({
   //     next: (user: any) => { 
+  //   console.log("HERE IAM 1", user);
   //       this.tokenExpiryTime = JSON.stringify(user.expires_in);
   //       localStorage.setItem('currentClient',JSON.stringify(user.access_token));
   //       localStorage.setItem('refreshToken',JSON.stringify(user.refresh_token));
   //       localStorage.setItem('EXPIRE', JSON.stringify(user.refresh_token));
   //       localStorage.setItem('expireTime', JSON.stringify(user.expires_in));
   //       if (user) {
+  //         console.log("HERE IAM 2", user);
   //         this.getUserInfo();
   //       }
-       
+
   //     },
   //     error: (error) => {
   //       console.error(error);
   //       this.toastSVC.warning(
   //         "Info!",
-  //         "Failed to login to ReRIMIS",
+  //         "Unable to login to ReRIMIS",
   //         5000
   //       );
   //     },
+    
   //  });
-  this.router.navigate(["/dashboard"]);
-}
+  }
 
  getUserInfo(){
   this.authenticationSrvc.userInfo().subscribe(response => {
+    console.log("response User INFORMATION", response);
+    
     if (response.code === 6000) {     
       localStorage.setItem('organizationUUID', response.data.organization);
       localStorage.setItem('userInfo', JSON.stringify(response.data));
-      if (response.data.organization === "") {
-        this.router.navigate(["/dashboard"]);
-      }else{
-        this.getOrganizationInfo(response.data.organization)
-      }
-      
+      this.getOrganizationInfo(response.data.organization)
     }else{
       this.toastSVC.warning(
         "Info!",
@@ -113,8 +111,9 @@ export class LoginComponent implements OnInit {
 
  getOrganizationInfo(id: any){
   this.authenticationSrvc.orgInfo(id).subscribe(response => {
+     console.log("org", response);
     if (response.code === 6000) {
-      console.log("org", response);
+      console.log("org", response.data);
       localStorage.setItem("logo", response.data.logo);
       localStorage.setItem("orgName", response.data.name);
       this.router.navigate(["/dashboards"]);

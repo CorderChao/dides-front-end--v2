@@ -22,16 +22,16 @@ import { LightboxModule } from "ngx-lightbox";
 import { defineElement } from "@lordicon/element";
 import lottie from "lottie-web";
 
+// Pages Routing
 import { PagesRoutingModule } from "./pages-routing.module";
-import { DashboardComponent } from "./dashboards/dashboard/dashboard.component";
-import { DashboardDataComponent } from './dashboard-data/dashboard-data.component';
-import { SharedModule } from "../shared/shared.module";
+import { SharedModule } from "../modules/shared/shared.module";
+import { ToastsContainer } from "../modules/dashboards/dashboard/toasts-container.component";
+
 
 @NgModule({
-  declarations: [DashboardComponent, DashboardDataComponent],
+  declarations: [ToastsContainer,],
   imports: [
     CommonModule,
-    SharedModule,
     FormsModule,
     NgbToastModule,
     NgbProgressbarModule,
@@ -44,6 +44,9 @@ import { SharedModule } from "../shared/shared.module";
     PagesRoutingModule,
     SlickCarouselModule,
     LightboxModule,
+    SharedModule,
+    // DashboardsModule,
+    // UserManagementModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

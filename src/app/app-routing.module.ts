@@ -1,83 +1,59 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { AuthGuard } from './modules/user-management/guards/auth.guard'
+
+import { LayoutComponent } from "./pages/layouts/layout.component";
 
 // Auth
-import { LayoutComponent } from "./shared/layouts/layout.component";
+import { AuthGuard } from "./core/guards/auth.guard";
+import { AboutusComponent } from "./modules/shared/components/aboutus/aboutus.component";
+import { HomepageComponent } from "./modules/shared/components/homepage/homepage.component";
+import { FaqsComponent } from "./modules/shared/components/faqs/faqs.component";
+import { PageNotFoundComponent } from "./modules/shared/components/page-not-found/page-not-found.component";
+import { ApplicantLandingComponent } from "./modules/shared/components/applicant-landing/applicant-landing.component";
+import { OnlineApplicationComponent } from "./modules/shared/components/online-application/online-application.component";
 import { LoginComponent } from "./modules/user-management/view/login/login.component";
-import { MapComponent } from "./shared/components/map/map.component";
-
-
 
 const routes: Routes = [
-  {
-    path: "",
-    component: LoginComponent,
-    children: [
-      { path: "login", component: LoginComponent },
-    ],
-  },
-  {
-    path: "map",
-    component: LayoutComponent,
-    children: [
-      { path: "", component: MapComponent},
-    ],
-  },
-  {
-    path: "dashboard",
-    component: LayoutComponent,
-    canActivate: [AuthGuard],
-    loadChildren: () =>
-      import("./pages/pages.module").then((m) => m.PagesModule),
-  },
-  {
-    path: "projects",
-    component: LayoutComponent,
-    canActivate: [AuthGuard],
-    loadChildren: () =>
-      import("./modules/projects/projects.module").then((m) => m.ProjectsModule),
-  },
+    {path: "", component: HomepageComponent}, 
+    {path: "home", component: HomepageComponent}, 
+    { path: "faqs", component: FaqsComponent },
+    { path: "aboutus", component: AboutusComponent },
+   { path: "login", component: LoginComponent },
+    { path: "online-application", component: OnlineApplicationComponent },
+    { path: "inbox", 
+      component: ApplicantLandingComponent,
+      canActivate: [AuthGuard],
+    },
+    {
+      path: "dashboards",
+      data: {
+        parentNode: "Dashboard",
+        childNode: "Dashboards",
+        title: "Dashboards",
+        active: true,
+      },
+      component: LayoutComponent,
+      loadChildren: () =>
+        import("../app/modules/dashboards/dashboards.module").then((m) => m.DashboardsModule),
+        canActivate: [AuthGuard],
+    },
+
+
   {
     path: "reports",
     component: LayoutComponent,
-    canActivate: [AuthGuard],
+    data: { 
+      parentNode: "Reports",
+      childNode: "Reports List",
+      title: "Reports",
+      active: true,
+    },
     loadChildren: () =>
       import("./modules/reports/reports.module").then((m) => m.ReportsModule),
-  },
-  {
-    path: "settings",
-    component: LayoutComponent,
     canActivate: [AuthGuard],
-    loadChildren: () =>
-      import("./modules/settings/settings.module").then(
-        (m) => m.SettingsModule,
-      ),
   },
-  {
-    path: "auth",
-    loadChildren: () =>
-      import("./pages/account/account.module").then((m) => m.AccountModule),
-  },
-  {
-    path: "users",
-    component: LayoutComponent,
-    canActivate: [AuthGuard],
-    loadChildren: () =>
-      import("./modules/user-management/user-management.module").then(
-        (m) => m.UserManagementModule,
-      ),
-  },
-  {
-    path: ":id/project-progress-reporting",
-    component: LayoutComponent,
-    canActivate: [AuthGuard],
-    loadChildren: () =>
-      import("./modules/project-progess-reports/project-progess-reports.module").then(
-        (m) => m.ProjectProgessReportsModule,
-      ),
-  },
-  
+
+  { path: '**', component: PageNotFoundComponent },  // Wildcard 
 ];
 
 @NgModule({

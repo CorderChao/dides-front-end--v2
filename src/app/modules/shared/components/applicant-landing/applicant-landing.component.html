@@ -1,0 +1,141 @@
+<div class="wrapper">
+    <div class="profile-foreground position-relative">
+        <div class="profile-wid-bg" style="height: 250px;">
+            <img src="assets/images/college-banner.jpg" alt="" class="profile-wid-img" />
+        </div>
+
+        <div class="row justify-content-center" style="height: 200px;">
+            <div class="col-lg-10 col-sm-12">
+                <div class="text-center pt-4">
+                    <p class="welcome-text"><span class="text-yellow">DODOMA INSTITUTE OF DEVELOPMENT AND</span> </p>
+                 <p class="welcome-text"><span class="text-yellow"> ENTREPRENEURSHIP STUDIES (DIDES)</span></p>
+                    <h2 class="display-8 fw-semibold mb-3 lh-base">
+                        <span class="display-10 fw-semibold mb-3 lh-base" style="font-style: italic;">&nbsp;&nbsp;Welcome, </span> <br />
+                         {{student?.firstName}} {{student?.middleName}} {{student?.lastName}} 
+                        
+                    </h2>
+                    <div class="profile-picture-container">
+                        <img [src]="student?.profilePicture || 'assets/images/default-profile.png'" 
+                             alt="Profile Picture" class="profile-picture">
+                    </div>
+                    <div class="row text-white lh-base">
+                        <div class="col-10">
+  Student ID:&nbsp;&nbsp;<span class="text-success">{{student?.studentId}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        Program:&nbsp;&nbsp;<span class="text-success">{{student?.program}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        Year:&nbsp;&nbsp;<span class="text-success">{{student?.year}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        Semester:&nbsp;&nbsp;<span class="text-success">{{student?.semester}}</span>
+                        </div>
+                        <div class="col-2">
+                            <div class="d-flex  justify-content-center">
+                        <div class="dropdown" (click)="toggleDropdown($event)" [class.show]="isDropdownOpen"
+                            style="position: relative;">
+                            <div id="profileDropdown"
+                                class="dropdown-toggle d-flex align-items-center p-2 justify-content-between"
+                                [attr.aria-expanded]="isDropdownOpen" style="background-color: rgb(58, 58, 112); border-radius: 3px; height: 35px; cursor: pointer; width: auto;">
+                                <div class="d-flex align-items-center p-2" style="color:white; border: 1px;">
+                                    My Profile 
+                                </div>
+                            </div>
+                            <div *ngIf="isDropdownOpen" class="dropdown-menu dropdown-menu-right show"
+                                aria-labelledby="profileDropdown" style="background-color: rgb(58, 58, 112);">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center"
+                                            style="cursor: pointer; color: rgb(190, 206, 8);" (click)="editProfile()">
+                                            <i class="ri-edit-line me-2" style="color:darkkhaki"></i>
+                                            Edit Profile
+                                        </a>
+                                        <a class="dropdown-item d-flex align-items-center"
+                                            style="cursor: pointer;  color: rgb(190, 206, 8);" (click)="changePassword('change')">
+                                            <i class="ri-lock-password-line me-2" style="color:darkkhaki"></i>
+                                            Change Password
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center"
+                                            style="cursor: pointer; color: rgb(190, 206, 8);" (click)="logout()">
+                                            <i class="mdi mdi-logout text-white-muted me-2" style="color:darkkhaki"></i>
+                                            Log Out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                      
+                    </div> 
+
+                </div>
+            </div>
+        </div>
+
+        <section class="section nft-hero" id="hero">
+            <div class="pt-4 mb-4 mb-lg-3 pb-lg-4">
+                <div class="cont">
+                    <div class="col-12">
+                        <mat-tab-group (selectedTabChange)="onTabChanged($event)" class="custom-tab-group" >
+                            <mat-tab label="RESULTS" >
+                                <div class="card-body">
+                                    <div class="mx-n3">
+                                        <ngx-simplebar style="max-height: 400px; width: 100%;" class="px-3">
+                                            <data-table [columns]="resultsColumns" [items]="results" [sort]="true"
+                                                caption="Academic Results" subTitle="">
+                                                <ng-template pTemplate="semester" let-item>
+                                                    {{item.semester | uppercase}}
+                                                </ng-template>
+                                                <ng-template pTemplate="actions" let-item>
+                                                    <button mat-icon-button (click)="viewResultDetails(item)">
+                                                        <mat-icon color="primary">visibility</mat-icon>
+                                                    </button>
+                                                </ng-template>
+                                            </data-table>
+                                        </ngx-simplebar>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                            
+                            <mat-tab label="TIMETABLE">
+                                <div class="card-body">
+                                    <div class="mx-n3">
+                                        <ngx-simplebar style="max-height: 400px; width: 100%;" class="px-3">
+                                            <data-table [columns]="timetableColumns" [items]="timetable" [sort]="true"
+                                                caption="Class Timetable" subTitle="">
+                                                <ng-template pTemplate="day" let-item>
+                                                    {{item.day | uppercase}}
+                                                </ng-template>
+                                                <ng-template pTemplate="time" let-item>
+                                                    {{item.startTime}} - {{item.endTime}}
+                                                </ng-template>
+                                            </data-table>
+                                        </ngx-simplebar>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                            
+                            <mat-tab label="ANNOUNCEMENTS">
+                                <div class="card-body">
+                                    <div class="mx-n3">
+                                        <ngx-simplebar style="max-height: 400px; width: 100%;" class="px-3">
+                                            <div *ngFor="let announcement of announcements" class="announcement-card">
+                                                <h5>{{announcement.title}}</h5>
+                                                <p class="text-muted"><small>{{announcement.date | date: 'mediumDate'}}</small></p>
+                                                <p>{{announcement.content}}</p>
+                                                <div *ngIf="announcement.attachment" class="mt-2">
+                                                    <a href="{{announcement.attachment}}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                        <i class="ri-download-line"></i> Download Attachment
+                                                    </a>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </ngx-simplebar>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

@@ -135,7 +135,6 @@
 }
 
 .simplebar-scrollbar {
-  height: 50px !important;
   position: absolute;
   right: 2px;
   width: 6px;
@@ -161,8 +160,7 @@
 
 .simplebar-track.simplebar-vertical {
   top: 0;
-  width: 8px;
-  background: #8989893d;
+  width: 11px;
 }
 
 .simplebar-track.simplebar-vertical .simplebar-scrollbar:before {
