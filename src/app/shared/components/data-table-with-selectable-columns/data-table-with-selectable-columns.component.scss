@@ -1,0 +1,275 @@
+:host {
+  ::ng-deep {
+    .mat-elevation-z8 {
+      // box-shadow: 0 2px 2px -3px rgba(0, 0, 0, 0.02), 0 0px 0px 1px rgba(0, 0, 0, 0.01), 0 3px 6px 2px rgba(0, 0, 0, 0.045) !important;
+      border: 1px solid #cfcfcf;
+      border-color: #dbdbdb;
+      // border-radius: 10px !important;
+    }
+
+    .mat-mdc-row {
+      &:hover {
+        transition: all 0.35s;
+      }
+    }
+
+    .mat-mdc-row .mat-mdc-cell:nth-child(1) {
+      flex: 0 0 50px;
+    }
+
+    .mat-mdc-row .mat-mdc-cell:first-of-type {
+      padding-left: 24px !important;
+    }
+
+    .mat-mdc-row .mat-mdc-cell:last-of-type {
+      padding-left: 24px !important;
+    }
+
+    .mat-mdc-row .mat-mdc-cell {
+      border-right: 1px solid rgba(#efefef,1);
+      border-bottom: 1px solid rgba(#efefef,1);
+      padding-left: 8px !important;
+    }
+
+    .column-title {
+      display: none;
+    }
+
+    .mat-mdc-cell,
+    .mat-mdc-footer-cell {
+      font-size: 0.9rem ;
+      color: #404040;
+    }
+
+    .mat-mdc-header-row .mat-mdc-header-cell:first-child {
+      flex: 0 0 50px;
+    }
+
+    .mat-mdc-header-row .mat-mdc-header-cell:last-child, .mat-mdc-row .mat-mdc-cell:last-child {
+
+    }
+
+    .mat-mdc-header-cell {
+      color: var(--primary-color);
+      font-weight: bold;
+      border-bottom-color: #808080 !important;
+      border-bottom-width: var(--mat-table-row-item-outline-width, 2px);
+      border-bottom-style: solid;
+      letter-spacing: var(--mat-table-header-headline-tracking);
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    .mat-mdc-header-row .mat-mdc-header-cell:first-of-type {
+      padding-left: 24px !important;
+    }
+
+    .mat-mdc-header-row .mat-mdc-header-cell {
+      padding-left: 8px !important;
+      font-size: 14px;
+      font-weight: 500;
+      // background-color: #f9f9f9;
+    }
+
+    .mat-mdc-header-row {
+      background-color: var(--primary-color-very-faded);
+      // background: linear-gradient( to bottom, #f0f9ff 0%, #eaf6f2 47%,  #dbeee8 100% );
+    }
+
+    mat-footer-row.hide {
+      display: none !important;
+    }
+
+    .mat-column-noData {
+      justify-content: center;
+      color: #858585;
+    }
+
+    .mat-mdc-header-row .mat-mdc-header-cell {
+      border-right: 1px solid rgba(238, 238, 238, 0.81);
+    }
+    // search
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+    .mat-form-field-prefix {
+      position: relative;
+      overflow: visible;
+      width: 70px;
+
+      .mat-icon {
+        position: absolute;
+        top: -17px;
+        color: var(--primary-color);
+      }
+    }
+
+    .action-icons {
+      display: flex;
+      width: 100%;
+
+      .mat-icon.material-icons {
+        margin-left: -2px;
+        padding-top: 2px;
+      }
+
+      .button-holder {
+        margin-right: 15px !important;
+        padding: 6px 8px !important;
+        border-radius: 2px;
+        display: flex;
+        border: 1px solid #b3b3b3;
+        cursor: pointer;
+        transition: all 0.2s;
+        border-radius: 4px;
+        margin-left: 0 auto;
+
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+
+      .icon-holder {
+        margin-right: 15px !important;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        color: #333;
+        background-size: 200%;
+        background-position: left;
+        transition: all .5s;
+        cursor: pointer;
+        box-shadow: 0 3px 7px 0 rgba(0, 0, 0, .13), 0 1px 2px 0 rgba(0, 0, 0, .11) !important;
+        transition: all 0.35s;
+
+        .mat-icon{
+          position:relative;
+          top:1px;
+        }
+
+        &:hover {
+          box-shadow: 0px 4px 8px -2px rgba(9, 30, 66, 0.25), 0px 0px 0px 1px rgba(9, 30, 66, 0.08) !important;
+        }
+      }
+
+      > .icon-holder:last-child {
+        margin-right: 0 !important;
+      }
+    }
+
+    mat-header-row {
+      min-height: 35px !important;
+    }
+
+    mat-cell:last-of-type {
+      padding-right: 8px !important;
+    }
+
+    mat-header-cell:last-of-type {
+      padding-right: 8px !important;
+    }
+
+    .mat-mdc-raised-button {
+      box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2),
+      0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 3px 0px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    @media (max-width: 597px) {
+      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+      mat-table {
+        // tbody,
+        mat-row,
+        mat-cell {
+          display: block;
+          width: 100%;
+        }
+
+        mat-header-row {
+          display: none;
+        }
+
+        mat-row {
+          margin-bottom: 15px;
+          display: block;
+          width: 100%;
+        }
+
+        mat-cell {
+          text-align: right;
+          padding-right: 10px;
+          padding-top: 10px;
+          position: relative;
+          border-bottom: 1px solid var(--white-dark);
+
+          .column-action {
+            position: absolute;
+            right: 0;
+            padding-right: 10px;
+            padding-bottom: 10px;
+          }
+
+          .column-title {
+            display: block;
+            position: absolute;
+            left: 0;
+            width: 30%;
+            padding-left: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
+
+  .mat-mdc-icon-button {
+    padding-top: 0px;
+    color: white;
+  }
+
+  .mat-mdc-table {
+    border-radius: 10px;
+
+    .mat-mdc-header-row {
+      background: rgba(#eee, 0.5) !important;
+      border-radius: 10px 10px 0px 0px;
+    }
+  }
+
+  .mat-mdc-paginator {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+}
+
+.search-form-field-container{
+  .search-form-field{
+    max-height: 70px;
+    input{
+      background: transparent !important;
+    }
+  }
+}
+
+.data-table-container{
+  overflow: hidden !important;
+  margin-top: 7px !important;
+}
+
+.no-data-row{
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  .mat-cell{
+    padding: 1.9rem !important;
+    background-color: #eee;
+    border-bottom: 2px solid #808080;
+  }
+}
+.table-responsive{
+  overflow: hidden !important;
+}

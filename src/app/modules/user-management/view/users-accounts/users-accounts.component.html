@@ -1,0 +1,94 @@
+<app-headings [title]="title" [useBackButton]="false"></app-headings>
+      <!-- Nav tabs -->
+    <ul ngbNav #ModifierCustom="ngbNav" [activeId]="1" class="nav nav-pills nav-customs nav-danger mb-3">
+        <li [ngbNavItem]="1">
+          <a ngbNavLink class="nav-link">
+           GOVERNMENT'S EMPLOYEES
+          </a>
+          <ng-template ngbNavContent>
+            <div class="card">
+              <div class="card-body">
+                <app-data-table
+                  [columnHeader]="tableColumns"
+                  [hasActionsColumn]="true"
+                  [tableData]="users"
+                >
+                  <ng-template #actions let-data="data">
+                    <app-actions-menu>
+                      <app-actions-button
+                        [btnIcon]="'edit'"
+                        [btnText]="'Edit'"
+                        (click)="edit(data)"
+                      >
+                      </app-actions-button>
+                    
+                      <app-actions-button
+                        *ngIf="data.status == 'Active'"
+                        [btnIcon]="'trash'"
+                        [btnText]="'Reset Password'"
+                        (click)="reset_password(data)"
+                      >
+                      </app-actions-button>
+                    </app-actions-menu>
+                  </ng-template>
+            
+                  <div class="contents" toolbar-content>
+                    <app-button
+                      (clicked)="openDialog()"
+                      buttonName="Add User"
+                      _icon="ri-add-line align-bottom me-1"
+                    ></app-button>
+                  </div>
+                </app-data-table>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink class="nav-link">
+           CONSULTANCY EMPLOYEES
+          </a>
+          <ng-template ngbNavContent>
+            <div class="card">
+              <div class="card-body">
+                <app-data-table
+                  [columnHeader]="tableColumns2"
+                  [hasActionsColumn]="true"
+                  [tableData]="agentsUsers"
+                >
+                  <ng-template #actions let-data="data">
+                    <app-actions-menu>
+                      <app-actions-button
+                        [btnIcon]="'edit'"
+                        [btnText]="'Edit'"
+                        (click)="edit(data)"
+                      >
+                      </app-actions-button>
+                    
+                      <app-actions-button
+                        *ngIf="data.status == 'Active'"
+                        [btnIcon]="'trash'"
+                        [btnText]="'Reset Password'"
+                        (click)="reset_password(data)"
+                      >
+                      </app-actions-button>
+                    </app-actions-menu>
+                  </ng-template>
+            
+                  <div class="contents" toolbar-content>
+                    <app-button
+                      (clicked)="openDialog2()"
+                      buttonName="Add User"
+                      _icon="ri-add-line align-bottom me-1"
+                    ></app-button>
+                  </div>
+                </app-data-table>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+      </ul> 
+     <div class="tab-content text-muted">
+        <div [ngbNavOutlet]="ModifierCustom"></div>
+      </div>
+  

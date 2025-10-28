@@ -1,0 +1,15 @@
+<div class="container mt-1">
+    <div class="row d-flex justify-content-start">
+      <div class="col-xl-3 col-lg-2 col-sm-4 col-md-2 mb-1" *ngFor="let dashlet of dashlets">
+        <div class="card  mat-elevation-z6 dashlet-bg" (click)="gotoLink(dashlet.route, dashlet.title)" >
+          <div class="card-body">
+            <div class="card-inner">
+                <i class="{{ dashlet.iconName }}" style="font-size: 30px;"></i>
+               <h5 class="mt-3 mb-2">{{ dashlet.title }}</h5>
+              <h6>{{ dashlet.subTitle }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

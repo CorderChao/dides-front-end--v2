@@ -1,0 +1,707 @@
+<app-headings [title]="title" [useBackButton]="true"></app-headings>
+
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="userform">
+      <ng-template matStepLabel>User Details</ng-template>
+      <form [formGroup]="userform" autocomplete="off" *ngIf="form === 'govUser'">
+        <mat-content>
+          <div class="row">
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>User Level</mat-label>
+                <mat-select matInput formControlName="userLevel">
+                  <mat-option
+                    *ngFor="let type of adminlevel"
+                    [value]="type.setupUUID"
+                    (click)="checkLevel(type.name)"
+                  >
+                    {{ type.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>User Designation</mat-label>
+                <mat-select
+                  formControlName="designationCode"
+                  placeholder="User Designation"
+                >
+                  <mat-option
+                    [value]="item.setupUUID"
+                    *ngFor="let item of userTypes"
+                  >
+                    {{ item.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>Check/File Number</mat-label>
+                <input
+                  matInput
+                  formControlName="checkNumber"
+                  type="text"
+                  placeholder="Check/File Number"
+                />
+                <!-- [textMask]="{ mask: phoneMask }" -->
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>First Name</mat-label>
+                <input
+                  matInput
+                  formControlName="firstName"
+                  type="text"
+                  placeholder="First Name"
+                />
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>Middle Name</mat-label>
+                <input
+                  matInput
+                  formControlName="middleName"
+                  type="text"
+                  placeholder="Middle Name"
+                />
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>Last Name</mat-label>
+  
+                <input
+                  matInput
+                  formControlName="lastName"
+                  type="text"
+                  placeholder="Last Name"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-label>Email Address</mat-label>
+                <input
+                  matInput
+                  formControlName="email"
+                  type="text"
+                  placeholder="Email Address"
+                />
+                <mat-error
+                  *ngIf="
+                    userform.get('email').invalid &&
+                    (userform.get('email').dirty || userform.get('email').touched)
+                  "
+                >
+                  <ng-container *ngIf="userform.get('email').errors['required']"
+                    >This field is required!</ng-container
+                  >
+                  <ng-container *ngIf="userform.get('email').errors['pattern']"
+                    >Email is invalid format!</ng-container
+                  ></mat-error
+                >
+              </mat-form-field>
+            </div>
+  
+            <!-- <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="phoneNumber" type="text" placeholder="Phone Number">
+                <mat-error>This Field is required!</mat-error>
+              </mat-form-field>
+            </div> -->
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>Phone Number</mat-label>
+                <input
+                  matInput
+                  formControlName="phoneNumber"
+                  type="text"
+                  placeholder="Phone Number"
+                  (keydown)="validateNumberInput($event)"
+                  pattern="^(07|06)\d{8}$"
+                  maxlength="10"
+                  required
+                />
+                <mat-error
+                  *ngIf="
+                    userform.get('phoneNumber').invalid &&
+                    (userform.get('phoneNumber').dirty ||
+                      userform.get('phoneNumber').touched)
+                  "
+                >
+                  <ng-container
+                    *ngIf="userform.get('phoneNumber').errors['required']"
+                    >This field is required!</ng-container
+                  >
+                  <ng-container
+                    *ngIf="userform.get('phoneNumber').errors['pattern']"
+                    >Phone number must start with 07 or 06 and be 10 digits
+                    long!</ng-container
+                  >
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <mat-form-field>
+                <mat-label>Sex</mat-label>
+                <mat-select matInput formControlName="sex">
+                  <mat-option *ngFor="let item of sex" [value]="item.value">{{
+                    item.name
+                  }}</mat-option>
+                </mat-select>
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row">
+            <div class="col-4" [hidden]="!showRegCon">
+              <mat-form-field>
+                <mat-label>Regions</mat-label>
+                <mat-select
+                  matInput
+                  formControlName="regionCode"
+                  (selectionChange)="onRegionChange($event)"
+                >
+                  <mat-option
+                    *ngFor="let region of regions"
+                    [value]="region.code"
+                    >{{ region.name }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-4" [hidden]="!showCon">
+              <mat-form-field>
+                <mat-label>Councils</mat-label>
+                <mat-select matInput formControlName="councilCode">
+                  <mat-option
+                    *ngFor="let council of councils"
+                    [value]="council.code"
+                    >{{ council.name }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <!-- *ngIf="role === 'ROLE_SUPER_ADMIN'" -->
+              <mat-form-field>
+                <mat-label>Select Institution</mat-label>
+                <mat-select
+                  formControlName="organizationId"
+                  placeholder="Select Institution"
+                >
+                  <mat-option
+                    [value]="item.uuid"
+                    *ngFor="let item of institutionLists" (click)="organizationChange(item)"
+                  >
+                    {{ item.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div *ngIf="isUpdate" class="mt-3">
+            <div class="row">
+              <div class="col-2">
+                <mat-slide-toggle
+                  color="primary"
+                  formControlName="enabled"
+                  [checked]="user.enabled"
+                  (change)="toggleStatus(user)"
+                >
+                  <span class="badge text-success" *ngIf="user.enabled">
+                    Enabled
+                  </span>
+                  <span class="badge text-danger" *ngIf="!user.enabled">
+                    Disabled
+                  </span>
+                </mat-slide-toggle>
+              </div>
+              <div class="col-2">
+                <mat-slide-toggle
+                  color="primary"
+                  formControlName="accountNonLocked"
+                  [checked]="user.accountNonLocked"
+                  (change)="toggleStatus3(user)"
+                >
+                  <span class="badge text-success" *ngIf="user.accountNonLocked">
+                    Not Locked
+                  </span>
+                  <span class="badge text-danger" *ngIf="!user.accountNonLocked">
+                    Locked
+                  </span>
+                </mat-slide-toggle>
+              </div>
+              <div class="col-3">
+                <mat-slide-toggle
+                  color="primary"
+                  formControlName="accountNonExpired"
+                  [checked]="user.accountNonExpired"
+                  (change)="toggleStatus4(user)"
+                >
+                  <span class="badge text-success" *ngIf="user.accountNonExpired"
+                    >Account Non Expired
+                  </span>
+                  <span class="badge text-danger" *ngIf="!user.accountNonExpired">
+                    Account Expired
+                  </span>
+                </mat-slide-toggle>
+              </div>
+              <div class="col-4">
+                <mat-slide-toggle
+                  color="primary"
+                  formControlName="credentialsNonExpired"
+                  [checked]="user.credentialsNonExpired"
+                  (change)="toggleStatus2(user)"
+                >
+                  <span
+                    class="badge text-success"
+                    *ngIf="user.credentialsNonExpired"
+                    >Credential Non Expired
+                  </span>
+                  <span
+                    class="badge text-danger"
+                    *ngIf="!user.credentialsNonExpired"
+                  >
+                    Credential Expired
+                  </span>
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+        </mat-content>
+  
+        <div class="button-container">
+            <button mat-raised-button color="primary" (click)="goForward(stepper)"
+             [disabled]="userform.invalid">
+             <span class="text-button">Next&nbsp;<b>>></b></span>
+        </button>
+          </div>
+      </form>
+  
+      <form
+        [formGroup]="userform"
+        autocomplete="off"
+        *ngIf="form === 'agentUser'">
+        <mat-content>
+          <div class="row">
+            <div class="col-3">
+              <mat-form-field>
+                <mat-label>User Level</mat-label>
+                <mat-select matInput formControlName="userLevel">
+                  <mat-option
+                    *ngFor="let type of adminlevel"
+                    [value]="type.setupUUID"
+                    (click)="checkLevel(type.name)"
+                  >
+                    {{ type.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>User Designation</mat-label>
+                <mat-select
+                  formControlName="designationCode"
+                  placeholder="User Designation"
+                >
+                  <mat-option
+                    [value]="item.setupUUID"
+                    *ngFor="let item of userTypes"
+                  >
+                    {{ item.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-5">
+              <mat-form-field>
+                <mat-label>Identification Number</mat-label>
+                <input
+                  matInput
+                  formControlName="identificationCardNumber"
+                  type="text"
+                  (input)="formatNida($event)"
+                  pattern="^\d{8}-\d{5}-\d{5}-\d{2}$"
+                  maxlength="23"
+                  placeholder="IdentificationCard Number"
+                />
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>First Name</mat-label>
+                <input
+                  matInput
+                  formControlName="firstName"
+                  type="text"
+                  placeholder="First Name"
+                />
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>Middle Name</mat-label>
+                <input
+                  matInput
+                  formControlName="middleName"
+                  type="text"
+                  placeholder="Middle Name"
+                />
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>Last Name</mat-label>
+  
+                <input
+                  matInput
+                  formControlName="lastName"
+                  type="text"
+                  placeholder="Last Name"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-5">
+              <mat-form-field>
+                <mat-label>Email Address</mat-label>
+                <input
+                  matInput
+                  formControlName="email"
+                  type="text"
+                  placeholder="Email Address"
+                />
+                <mat-error
+                  *ngIf="
+                    userform.get('email').invalid &&
+                    (userform.get('email').dirty || userform.get('email').touched)
+                  "
+                >
+                  <ng-container *ngIf="userform.get('email').errors['required']"
+                    >This field is required!</ng-container
+                  >
+                  <ng-container *ngIf="userform.get('email').errors['pattern']"
+                    >Email is invalid format!</ng-container
+                  ></mat-error
+                >
+              </mat-form-field>
+            </div>
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>Phone Number</mat-label>
+                <input
+                  matInput
+                  formControlName="phoneNumber"
+                  inputmode="numeric"
+                  type="text"
+                  placeholder="Phone Number"
+                  (keydown)="validateNumberInput($event)"
+                  pattern="^(07|06)\d{8}$"
+                  maxlength="10"
+                  required
+                />
+                <mat-error
+                  *ngIf="
+                    userform.get('phoneNumber').invalid &&
+                    (userform.get('phoneNumber').dirty ||
+                      userform.get('phoneNumber').touched)
+                  "
+                >
+                  <ng-container
+                    *ngIf="userform.get('phoneNumber').errors['required']"
+                    >This field is required!</ng-container
+                  >
+                  <ng-container
+                    *ngIf="userform.get('phoneNumber').errors['pattern']"
+                    >Phone number must start with 07 or 06 and be 10 digits
+                    long!</ng-container
+                  >
+                </mat-error>
+              </mat-form-field>
+            </div>
+  
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-label>Sex</mat-label>
+                <mat-select matInput formControlName="sex">
+                  <mat-option *ngFor="let item of sex" [value]="item.value">{{
+                    item.name
+                  }}</mat-option>
+                </mat-select>
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row">
+            <div class="col-4" [hidden]="!showRegCon">
+              <mat-form-field>
+                <mat-label>Regions</mat-label>
+                <mat-select
+                  matInput
+                  formControlName="regionCode"
+                  (selectionChange)="onRegionChange($event)"
+                >
+                  <mat-option
+                    *ngFor="let region of regions"
+                    [value]="region.code"
+                    >{{ region.name }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-4" [hidden]="!showCon">
+              <mat-form-field>
+                <mat-label>Councils</mat-label>
+                <mat-select matInput formControlName="councilCode">
+                  <mat-option
+                    *ngFor="let council of councils"
+                    [value]="council.code"
+                    >{{ council.name }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field>
+                <mat-label>Select Consultancy</mat-label>
+                <mat-select
+                  formControlName="organizationId"
+                  placeholder="Select Consultancy"
+                >
+                  <mat-option [value]="item.id" *ngFor="let item of agentLists" 
+                  (click)="agetChange(item)">
+                    {{ item.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error>This is a required field!</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row" *ngIf="isUpdate">
+            <div class="col-2">
+              <mat-slide-toggle
+                color="primary"
+                formControlName="enabled"
+                [checked]="user.enabled"
+                (change)="toggleStatus(user)"
+              >
+                <span class="badge text-success" *ngIf="user.enabled">
+                  Enabled
+                </span>
+                <span class="badge text-danger" *ngIf="!user.enabled">
+                  Disabled
+                </span>
+              </mat-slide-toggle>
+            </div>
+            <div class="col-2">
+              <mat-slide-toggle
+                color="primary"
+                formControlName="accountNonLocked"
+                [checked]="user.accountNonLocked"
+                (change)="toggleStatus3(user)"
+              >
+                <span class="badge text-success" *ngIf="user.accountNonLocked">
+                  Not Locked
+                </span>
+                <span class="badge text-danger" *ngIf="!user.accountNonLocked">
+                  Locked
+                </span>
+              </mat-slide-toggle>
+            </div>
+            <div class="col-3">
+              <mat-slide-toggle
+                color="primary"
+                formControlName="accountNonExpired"
+                [checked]="user.accountNonExpired"
+                (change)="toggleStatus4(user)"
+              >
+                <span class="badge text-success" *ngIf="user.accountNonExpired"
+                  >Account Non Expired
+                </span>
+                <span class="badge text-danger" *ngIf="!user.accountNonExpired">
+                  Account Expired
+                </span>
+              </mat-slide-toggle>
+            </div>
+            <div class="col-4">
+              <mat-slide-toggle
+                color="primary"
+                formControlName="credentialsNonExpired"
+                [checked]="user.credentialsNonExpired"
+                (change)="toggleStatus2(user)"
+              >
+                <span
+                  class="badge text-success"
+                  *ngIf="user.credentialsNonExpired"
+                  >Credential Non Expired
+                </span>
+                <span
+                  class="badge text-danger"
+                  *ngIf="!user.credentialsNonExpired"
+                >
+                  Credential Expired
+                </span>
+              </mat-slide-toggle>
+            </div>
+          </div>
+        </mat-content>
+        <div class="button-container">
+          <button mat-raised-button color="primary" (click)="goForward(stepper)"
+           [disabled]="userform.invalid">
+           <span class="text-button">Next&nbsp;<b>>></b></span>
+      </button>
+        </div>
+
+
+
+      </form>
+    </mat-step>
+    <!-- -->
+    <mat-step [stepControl]="roleForm">
+      <ng-template matStepLabel>Asign User Role</ng-template>
+  
+      <mat-content>
+        <div class="row">
+          <div class="col-md-6">
+            <div
+              class="col-md-12"
+              *ngIf="allRoles.length === 0 || availableRoles.length === 0"
+            >
+              <div class="scroll-wrapper scrollbar-inner">
+                <div
+                  class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar"
+                >
+                  <p class="p-3 text-center text-muted" style="margin-top: 25%">
+                    !--EMPTY--! No Available Role to Select.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <label
+              style="font-weight: bold; font-size: small"
+              *ngIf="allRoles.length !== 0 && availableRoles.length !== 0"
+              >Available Role(s)&nbsp;</label
+            >
+            <div
+              class="col-md-12"
+              *ngIf="allRoles.length !== 0 && availableRoles.length !== 0"
+            >
+              <div class="scroll-wrapper scrollbar-inner">
+                <div
+                  class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar"
+                >
+                  <mat-selection-list *ngIf="action === 'create'">
+                    <mat-list-option
+                      (click)="toggle2(item)"
+                      [value]="item"
+                      *ngFor="let item of allRoles"
+                    >
+                      {{ item.description | uppercase }}
+                    </mat-list-option>
+                  </mat-selection-list>
+                  <mat-selection-list *ngIf="action === 'update'">
+                    <mat-list-option
+                      (click)="toggle3(item)"
+                      [value]="item"
+                      *ngFor="let item of availableRoles"
+                    >
+                      {{ item.description | uppercase }}
+                    </mat-list-option>
+                  </mat-selection-list>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row" *ngIf="assignedRoles.length === 0">
+              <div class="col-md-12">
+                <div class="scroll-wrapper scrollbar-inner">
+                  <div
+                    class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar"
+                  >
+                    <p class="p-3 text-center text-muted" style="margin-top: 25%">
+                      This User currently does not have any Role selected to it,
+                      please assign roles from the right panel to this Role.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <label
+              style="font-weight: bold; font-size: small"
+              *ngIf="assignedRoles.length !== 0"
+              >Assigned Role(s)&nbsp;</label
+            >
+            <div class="col-md-12" *ngIf="assignedRoles.length !== 0">
+              <div class="scroll-wrapper scrollbar-inner">
+                <div
+                  class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar"
+                >
+                  <mat-selection-list>
+                    <mat-list-option
+                      (click)="toggle(item)"
+                      [value]="item"
+                      *ngFor="let item of assignedRoles"
+                      [selected]="true"
+                    >
+                      {{ item.description | uppercase }}
+                    </mat-list-option>
+                  </mat-selection-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-content>
+<!--   
+      <div class="button-container">
+        <button mat-raised-button color="accent" (click)="goBack(stepper)"
+         [disabled]="userform.invalid">
+         <span class="text-button"><b><< </b>&nbsp;BACK</span>
+    </button>
+      </div> -->
+
+      <div class="spacer"></div>
+      <div class="button-container">
+        <button mat-raised-button color="primary" 
+        (click)="save()"
+        [disabled]="assignedRoles.length === 0"
+         >
+         <mat-icon>save</mat-icon>
+        <span class="text-button">SAVE</span>
+    </button>
+      </div>
+    </mat-step>
+</mat-horizontal-stepper>

@@ -1,0 +1,50 @@
+<app-headings [title]="title" [useBackButton]="true"></app-headings>
+<!-- end card header -->
+
+<form [formGroup]="confTypeForm">
+  <div class="row">
+  <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>{{ label }}</mat-label>
+        <input type="text" matInput [formControl]="searchControl" placeholder="Enter search term">
+        <!-- <mat-icon matSuffix>search</mat-icon> -->
+        <button mat-icon-button matSuffix *ngIf="isSearchNotEmpty" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-icon-button matSuffix *ngIf="!isSearchNotEmpty">
+          <mat-icon>search</mat-icon>
+        </button>
+        <mat-select formControlName="setting_type" (selectionChange)="getConfigType($event)">
+          <mat-option *ngFor="let dataType of filteredDataTypes" [value]="dataType.value">
+            {{ dataType.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  <div class="col-md-4"></div>
+  </div>
+</form>
+<!-- table -->
+<div class="card">
+  <div class="card-body">
+
+    <app-data-table [columnHeader]="tableColumns" [hasActionsColumn]="true" [tableData]="listConfigTypes">
+      <ng-template #actions let-data="data">
+        <app-actions-menu>
+          <app-actions-button [btnIcon]="'edit'" [btnText]="'Edit'" (click)="edit(data)">
+          </app-actions-button>
+          <app-actions-button [btnIcon]="'delete'" [btnText]="'Delete'" (click)="delete(data)">
+          </app-actions-button>
+
+        </app-actions-menu>
+      </ng-template>
+
+      <div class="contents" toolbar-content>
+        <app-button (click)="create()" buttonName="Create New" _icon="ri-add-line align-bottom me-1"></app-button>
+      </div>
+    </app-data-table>
+
+
+  </div>
+</div>

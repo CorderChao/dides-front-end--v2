@@ -1,0 +1,189 @@
+
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
+import { StorageKey } from './storage.model';
+import { ToastService } from 'src/app/shared/services/toast.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class AuthenticationService {
+  private readonly baseUrl: string =  `${environment.BASE_API}/api/v1`;
+
+  token: string;
+  errorCode: any;
+  currentUser: null;
+  expire: null;
+  refreshToken: string;
+
+
+  constructor(
+    private toastSvc: ToastService,
+    private httpClientSvc: HttpClient,
+    private router: Router  ) { }
+
+  /**
+   * signin services
+   * @param username 
+   * @param password 
+  */
+  login(username: string, password: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + btoa(environment.CLIENTID +':' + environment.CLIENTSECRET),
+    });
+
+    const body = new HttpParams()
+    .set('grant_type', 'password')
+    .set('username', username)
+    .set('password', password);
+
+    return this.httpClientSvc.post<any>(`${this.baseUrl}/oauth2/token`, body, {headers});
+
+  }
+
+
+  
+
+
+  
+  /**
+   * logout
+  */
+  public logout() {
+
+    this.token = null;
+    this.currentUser = null;
+    this.expire = null;
+    this.refreshToken = '';
+    localStorage.removeItem('currentClient');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('expireTime');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('newAccount');
+    window.sessionStorage.clear();
+    this.router.navigate(['login']);
+
+  }
+
+  public isUserloggedIn(): boolean {
+    if (this.token !== null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public failedRequest(err: any): void {
+    this.errorCode = err.status;
+    const title = 'Access Denied';
+    if (this.errorCode === 401) {
+      this.toastSvc.info(title, 'Sorry, Unauthorized Access', 6000);
+      localStorage.removeItem('currentClient');
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('expireTime');
+      localStorage.removeItem('EXPIRE');
+      window.sessionStorage.clear();
+      this.router.navigateByUrl('/login');
+    }else if (this.errorCode === 404) {
+      const message = 'Service Temporarily Unavailable';
+      this.toastSvc.info(message, err.causedBy, 6000);
+    }else if (this.errorCode === 500) {
+      const message =
+        'Service Temporarily Unavailable please contact System Administrator';
+      const title = 'Connection Failure';
+      this.toastSvc.info(title, message, 6000);
+    }else if (this.errorCode === 504) {
+      const title = 'Connection Failure';
+      const message = 'Service Temporarily Unavailable';
+      this.toastSvc.info(title, message, 6000);
+    }
+  }
+
+  public userInfo(): any {
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/user/user-info`)
+  }
+
+  public orgInfo(id: any): any {
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/organizations/${id}`)
+  }
+
+  public fetchAllUsers(): Observable<any>{
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/user/users`);
+  }
+
+  public fetchUser(id: string): Observable<any>{
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/user/users/${id}`);
+  }
+
+  public fetchAllRolesPermissions(): Observable<any>{
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/roles`);
+  }
+
+  public getAllIdTypes(): Observable<any> {
+    let type = "IDENTITY_TYPE";
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/common-config/${type}`);
+  }
+
+  public getAllAdminlevel(): Observable<any> {
+    let type = "ADMINISTRATION_LEVEL";
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/common-config/${type}`);
+  }
+
+  public fetchAllPermissions(): Observable<any>{
+    return this.httpClientSvc.get<any[]>(`${this.baseUrl}/permissions`);
+  }
+
+  public saveRole(body: any): Observable<any>{
+    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/role`, body);
+  }
+
+  public saveUser(body: any): Observable<any>{
+    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/user/save/users`, body);
+  }
+
+  public saveUserRole(body: any): Observable<any>{
+    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/user/userRole`, body);
+  }
+
+  public changePassword(id: any, body: any): Observable<any>{
+    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/user/users/${id}/profile`, body);
+  }
+
+  public resetPassword(id: any): Observable<any>{
+    let payLoad = [];
+    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/user/users/${id}/password`, payLoad);
+  }
+
+  public addPermissionsRole(body: any): Observable<any>{
+    return this.httpClientSvc.post<any[]>(`${this.baseUrl}/saveRolePermission`, body);
+  }
+
+  public deletePermissionsRole(body: any): Observable<any>{
+    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/deletePermission`, body);
+  }
+
+  public deleteUserRole(userId: any, roleId: any): Observable<any>{
+    return this.httpClientSvc.delete<any[]>(`${this.baseUrl}/user/userRole/user/${userId}/${roleId}`);
+  }
+
+  public editRolePermission(id: any, body: any): Observable<any>{
+    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/role/${id}`, body);
+  }
+
+  public editUser(id: any, body: any): Observable<any>{
+    return this.httpClientSvc.put<any[]>(`${this.baseUrl}/user/users/${id}`, body);
+  }
+
+  public deleteRolePermission(id: any, body: any): Observable<any>{
+    return this.httpClientSvc.delete<any[]>(`${this.baseUrl}/role/${id}`, body);
+  }
+
+}

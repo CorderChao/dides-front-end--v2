@@ -1,0 +1,23 @@
+    <form
+            [formGroup]="dynamicFormGroup"
+            (ngSubmit)="submitForm(dynamicFormGroup.value)"
+            class="p-4"
+    >
+        <div class="row" style="font-size: 0.7rem !important;">
+            <ng-container *ngFor="let field of fields">
+                <div [ngClass]="field?.cssClass ?? 'col-md-12'">
+                    <app-field-input [field]="field"></app-field-input>
+                </div>
+            </ng-container>
+        </div>
+        <div class="text-align-right">
+            <button
+                    [disabled]="dynamicFormGroup.invalid"
+                    class="btn btn-primary radius-9 py-2 px-3 fs-5" 
+                    type="submit"
+            >
+              <span class="px-2"><i class="bx bx-{{ btnIcon ?? 'save' }}"></i></span><span>{{ btnText ?? "Save" }}</span> 
+            </button>
+        </div>
+    </form>
+

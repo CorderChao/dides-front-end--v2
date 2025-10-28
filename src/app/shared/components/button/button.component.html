@@ -1,0 +1,12 @@
+<button
+        @slideInFromTopAnimation
+        class="btn {{buttonStyle}} radius-9 ms-1 me-2"
+        type="button"
+        (click)="onClick()"
+>
+
+    <i class="{{_icon}}" [style.color]="iconColor"></i>
+    {{buttonName}}
+</button>
+
+

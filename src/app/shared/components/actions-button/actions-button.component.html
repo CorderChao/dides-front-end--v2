@@ -1,0 +1,17 @@
+<button
+        @slideInFromTopAnimation
+        mat-menu-item
+        class="action-icons"
+        (click)="buttonClicked($event)"
+        [disabled]="_isDisabled"
+>
+  <span class="me-2">
+    <i class="bx bx-{{ _icon }}"></i>
+  </span>
+  <span>
+    {{ _btnText }}
+   </span>
+
+</button>
+
+

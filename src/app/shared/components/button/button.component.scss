@@ -1,0 +1,17 @@
+.mat-menu-item {
+  line-height: 0px !important;
+  height: 38px !important;
+  &:hover {
+    background-color: #e9ecef;
+  }
+}
+
+.btn{
+  background: #808080;
+  color: white;
+  transition: transform .4s ease-in-out;
+  font-size: 0.8rem !important;
+  &:hover{
+    transform: translateX(10px);
+  }
+}

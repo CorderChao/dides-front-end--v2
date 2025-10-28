@@ -1,0 +1,169 @@
+<app-dialog-page-header [title]="title"></app-dialog-page-header>
+
+<form [formGroup]="packageForm" autocomplete="off">
+    <mat-dialog-content>
+
+        <mat-card-content>
+            <div class="row">
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field>
+                            <mat-label>Region</mat-label>
+                            <mat-select formControlName="region">
+                                <mat-option *ngFor="let region of regions" (click)="onRegionChange(region)"
+                                    [value]="region">{{ region.name
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error>This field is required!</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-4">
+                        <mat-form-field>
+                            <mat-label>Select Council</mat-label>
+                            <mat-select formControlName="councilsCodes">
+                                <mat-option *ngFor="let council of councils" (click)="onCouncilChange(council)" [value]="council.code">{{
+                                    council.name
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error>This field is required!</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field>
+                            <mat-label>Project Name</mat-label>
+                            <mat-select formControlName="projectId">
+                                <mat-option *ngFor="let project of projects"
+                                    [value]="project.id">{{project.name}}</mat-option>
+                            </mat-select>
+                            <mat-error>This field is required!</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <p>Add Package</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field>
+                            <mat-label>Package Name</mat-label>
+                            <input matInput formControlName="name" type="text" placeholder="Package Name" />
+                            <mat-error>This is required field!</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field>
+                            <mat-label>Consultant Name</mat-label>
+                            <mat-select formControlName="consultantId">
+                                <mat-option *ngFor="let cons of consultants" [value]="cons">{{cons.name}}</mat-option>
+                            </mat-select>
+                            <mat-error>This field is required!</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field>
+                            <mat-label>Contractor Name</mat-label>
+                            <mat-select formControlName="contactorId">
+                                <mat-option *ngFor="let cons of contractors"
+                                    [value]="cons.id">{{cons.name}}</mat-option>
+                            </mat-select>
+                            <mat-error>This is required field!</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <mat-form-field>
+                            <mat-label>Period(Months)</mat-label>
+                            <input matInput formControlName="period" type="number"
+                                placeholder="Enter Period in months" />
+                            <mat-error>This is required field!</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-4">
+                        <mat-form-field (click)="commencementDatePicker.open()">
+                            <mat-label>CommencementDate</mat-label>
+                            <input matInput [matDatepicker]="commencementDatePicker" formControlName="commencementDate">
+                            <mat-datepicker-toggle matSuffix [for]="commencementDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #commencementDatePicker></mat-datepicker>
+                            <mat-error>This field is required!</mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field (click)="completionDatePicker.open()">
+                            <mat-label>Completion Date</mat-label>
+                            <input matInput [matDatepicker]="completionDatePicker" formControlName="completionDate">
+                            <mat-datepicker-toggle matSuffix [for]="completionDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #completionDatePicker></mat-datepicker>
+                            <mat-error>This field is required!</mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <mat-form-field>
+                            <mat-label>Description</mat-label>
+                            <textarea matInput formControlName="description" type="text" cdkTextareaAutosize
+                                cdkAutosizeMinRows="1"></textarea>
+                            <mat-error>This field is required!</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-2">
+                        <app-button class="button mt-2" (click)=addPackage() buttonName="Add"
+                            _icon="ri-add-line align-bottom me-1"> </app-button>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <hr>
+            <div class="row" style="border: 1px;">
+                <table *ngIf="packageList.length>0">
+                    <thead>
+                        <th>No</th>
+                        <th>Package Name</th>
+                        <th>StartDate</th>
+                        <th>EndDate</th>
+                        <th>Consultant</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let package of packageList let i=index">
+                            <td>{{i+1}}</td>
+                            <td>{{package.name}}</td>
+                            <td>{{package.commencementDate}}</td>
+                            <td>{{package.completionDate}}</td>
+                            <td>{{package.consultantId?.name}}</td>
+                            <td><mat-icon (click)="removePackage(package)" style="color: red;">delete</mat-icon></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <!-- <mat-chip-set aria-label="Council selection">
+                    <mat-chip *ngFor="let council of councilSelected">{{council.name}}
+                        <button (click)="removeCouncil(council)" matChipRemove
+                            [attr.aria-label]="'remove ' + council.name">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>
+                </mat-chip-set> -->
+
+                <hr>
+            </div>
+            <app-button class="button" (click)=save(packageForm.value) buttonName="Save"
+                _icon="ri-add-line align-bottom me-1"> </app-button>
+
+        </mat-card-content>
+
+    </mat-dialog-content>
+</form>

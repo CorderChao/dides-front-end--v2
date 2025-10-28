@@ -1,0 +1,256 @@
+
+<div
+  class="mat-dialog-header"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+>
+  <div class="header-title">
+    <h2 mat-dialog-title>{{ title }}</h2>
+    <button
+      type="button"
+      class="btn-close btn-close-white ms-auto"
+      style="float: right; font-size: 1rem; padding-top: 20px"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+      mat-dialog-close
+    ></button>
+    
+  </div>
+</div>
+
+<mat-dialog-content>
+<div class="container">
+
+  <form [formGroup]="roleform" autocomplete="off" *ngIf="!editRoleForm && action !=='create'">
+    <mat-card>
+      <mat-card-content class="p-0">
+        <div class="row">
+          <div class="col-5">
+            <mat-form-field>
+              <mat-label>Name</mat-label>
+              <input  matInput formControlName="name" type="text" placeholder="Role Name"
+              readonly="editRoleForm">
+            </mat-form-field>
+          </div>
+          <div class="col-7">
+            <mat-form-field>
+              <mat-label>Description</mat-label>
+              <input readonly="editRoleForm"  matInput formControlName="description" type="text" placeholder="Role Description">
+            </mat-form-field>
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </form>
+
+  
+
+  <form [formGroup]="roleform" autocomplete="off" *ngIf="editRoleForm || action==='create'" >
+    <mat-card>
+      <mat-card-content class="p-0">
+        <div class="row">
+          <div class="col-5">
+            <mat-form-field>
+              <mat-label>Name</mat-label>
+              <input  matInput formControlName="name" type="text" placeholder="Role Name"
+             >
+            </mat-form-field>
+          </div>
+          <div class="col-7">
+            <mat-form-field>
+              <mat-label>Description</mat-label>
+              <input  matInput formControlName="description" type="text" placeholder="Role Description">
+            </mat-form-field>
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </form>
+
+  <div class="separator" *ngIf="!editRoleForm">Select Permmissions</div>
+  <div class="container-fluid p-2">
+    <div class="row" *ngIf="action === 'create' && !editRoleForm">
+      <div class="verticalLine"></div>
+      <div class="col-md-6">
+        <div class="row" *ngIf="permissions.length === 0 && searchPermissions.length === 0">
+          <div class="col-md-12">
+            <div class="scroll-wrapper scrollbar-inner">
+              <div class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar">
+                <p class="p-3 text-center text-muted" style="margin-top: 25%;">
+                  !--EMPTY--! No Available Permissions to select.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 style="font-weight:bold; font-size: small;" *ngIf="permissions.length !== 0 || searchPermissions.length !== 0">AVAILABLE PERMISSION(S)&nbsp; &nbsp;
+          <span class="badge bg-success-subtle text-success" style="font-size: medium;">{{permissions.length}}</span></h5>
+        <div class="row">
+          <div class="col-md-12" *ngIf="permissions.length !== 0 || searchPermissions.length !== 0">
+            <mat-form-field>
+              <mat-label>Search Permissions</mat-label>
+              <input matInput (keyup)="applyFilter($event)" type="text" placeholder="Search Permissions"
+                autocomplete="off">
+            </mat-form-field>
+            <div class="scroll-wrapper scrollbar-inner">
+              <div class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar">
+                <mat-selection-list>
+                  <mat-list-option (click)="toggle3(item)" [value]="item" *ngFor="let item of permissions">
+                    {{ item.displayName | uppercase }}
+                  </mat-list-option>
+                </mat-selection-list>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row" *ngIf="assignedPermissions.length === 0 && filterPermissions.length === 0 ">
+          <div class="col-md-12">
+            <div class="scroll-wrapper scrollbar-inner">
+              <div class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar">
+                <p class="p-3 text-center text-muted" style="margin-top: 25%;">
+                  This Role currently does not have any permissions selected to it, please assign permissions from
+                  the right panel to this Role.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <h5 style="font-weight:bold; font-size: small;" *ngIf="assignedPermissions.length !== 0
+         || filterPermissions.length !== 0 ">SELECTED PERMISSION(S)&nbsp;
+          &nbsp;<span class="badge bg-success-subtle text-success" style="font-size: medium;">{{assignedPermissions.length}}</span> </h5>
+        <mat-form-field *ngIf="assignedPermissions.length !== 0 || filterPermissions.length !== 0 ">
+          <mat-label>Search Permissions</mat-label>
+          <input matInput (keyup)="applyFilter2($event)" type="text" placeholder="Search Permissions"
+            autocomplete="off">
+        </mat-form-field>
+        <div class="row" *ngIf="assignedPermissions.length !== 0 || filterPermissions.length !== 0">
+          <div class="col-md-12">
+            <div class="scroll-wrapper scrollbar-inner">
+              <div class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar">
+                <mat-selection-list role="list">
+                  <mat-list-option (click)="toggle(item)" [value]="item" *ngFor="let item of assignedPermissions">
+                   {{ item.displayName | uppercase }}
+                  </mat-list-option>
+                </mat-selection-list>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+    <div class="row" *ngIf="action === 'update'  && !editRoleForm">
+      <div class="verticalLine"></div>
+      <div class="col-md-6">
+        <div class="row" *ngIf="permissions.length === 0">
+          <div class="col-md-12">
+            <div class="scroll-wrapper scrollbar-inner">
+              <div class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar">
+                <p class="p-3 text-center text-muted" style="margin-top: 25%;">
+                  !--EMPTY--! No Available Permissions to select.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 style="font-weight:bold; font-size: small;" *ngIf="permissions.length !== 0 ">AVAILABLE PERMISSION(S)&nbsp;&nbsp;
+          <span class="badge bg-success-subtle text-success" style="font-size: medium;">{{permissions.length}}</span></h5>
+        <div class="row">
+          <div class="col-md-12" *ngIf="permissions.length !== 0">
+            <mat-form-field>
+              <mat-label>Search Permissions</mat-label>
+              <input matInput (keyup)="applyFilter($event)" type="text" placeholder="Search Permissions"
+                autocomplete="off">
+            </mat-form-field>
+            <div class="scroll-wrapper scrollbar-inner">
+              <div class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar">
+                <mat-selection-list>
+                  <mat-list-option (click)="toggle3(item)" [value]="item" *ngFor="let item of permissions">
+                    {{ item.displayName | uppercase }}
+                  </mat-list-option>
+                </mat-selection-list>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row" *ngIf="assignedPermissions.length === 0">
+          <div class="col-md-12">
+            <div class="scroll-wrapper scrollbar-inner">
+              <div class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar">
+                <p class="p-3 text-center text-muted" style="margin-top: 25%;">
+                  This Role currently does not have any permissions selected to it, please assign permissions from
+                  the right panel to this Role.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <h5 style="font-weight:bold; font-size: small;" *ngIf="assignedPermissions.length !== 0">SELECTED PERMISSION(S)&nbsp; &nbsp;
+          <span class="badge bg-success-subtle text-success" style="font-size: medium;">{{assignedPermissions.length}}</span> </h5>
+        <mat-form-field *ngIf="assignedPermissions.length !== 0">
+          <mat-label>Search Permissions</mat-label>
+          <input matInput (keyup)="applyFilter2($event)" type="text" placeholder="Search Permissions"
+            autocomplete="off">
+        </mat-form-field>
+        <div class="row" *ngIf="assignedPermissions.length !== 0">
+          <div class="col-md-12">
+            <div class="scroll-wrapper scrollbar-inner">
+              <div class="scrollbar-inner scroll-content scroll-scrolly_visible scrollbar">
+                <mat-selection-list role="list" *ngIf="assignedPermissions.length > 0">
+                  <mat-list-option (click)="toggle(item)" [value]="item" *ngFor="let item of assignedPermissions">
+                   {{ item.displayName | uppercase }}
+                  </mat-list-option>
+                </mat-selection-list>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+
+
+
+
+</div>
+
+</mat-dialog-content>
+
+  <button class="form-button" type="submit" mat-flat-button mat-fab extended color="primary"
+  (click)="save()" [disabled]="roleform.invalid" >
+ <mat-icon>save</mat-icon>
+  <span class="text-button">{{label}}</span>
+  </button>
+  <div class="button-container" *ngIf="!showButton" >
+    <button mat-raised-button color="primary" 
+    (click)="save()"
+    [disabled]="roleform.invalid"
+     >
+     <mat-icon>save</mat-icon>
+    <span class="text-button">SAVE</span>
+</button>
+  </div>
+
+
+  <div class="button-container" *ngIf="showButton">
+    <button mat-raised-button color="primary" 
+    (click)="save()"
+    [disabled]="roleform.invalid"
+     >
+     <mat-icon>save</mat-icon>
+    <span class="text-button">SAVE</span>
+</button>
+  </div>
+
+
+
+ 

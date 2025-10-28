@@ -1,0 +1,12 @@
+.mat-menu-item {
+  line-height: 0px !important;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+}
+
+.action-icons {
+  display: flex;
+  width: 100%;
+}

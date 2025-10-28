@@ -1,0 +1,13 @@
+<div class="action-icons  actions-center position-relative">
+  <div class="action-icons button-holder">
+    <span class="toggle-menu-icon" [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </span>
+  </div>
+
+  <ng-container>
+    <mat-menu #menu="matMenu">
+      <ng-content></ng-content>
+    </mat-menu>
+  </ng-container>
+</div>

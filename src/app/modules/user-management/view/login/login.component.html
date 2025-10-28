@@ -1,0 +1,58 @@
+<!-- login.component.html -->
+<div class="login-container">
+  
+  <p class="login-title">Dodoma Institute of Development and Entrepreneurship</p>
+  <h1 style="color: #808080;  margin-bottom: 1.25rem;">(DIDES)</h1>
+  <div class="login-form">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" placeholder="Enter username" formControlName="username"
+          [ngClass]="{
+              'is-invalid': submitted && f['username']?.errors
+            }" />
+        @if (submitted && f['username']?.errors) {
+        <div class="invalid-feedback" align="left">
+          @if(f['username']?.errors['required']){
+          <div>Username is required</div>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="mb-3">
+    
+        <label class="form-label" for="password-input">Password</label>
+        <div class="position-relative auth-pass-inputgroup mb-3">
+          <input [type]="fieldTextType ? 'text' : 'password'" class="form-control pe-5 password-input"
+            placeholder="Enter password" id="password-input" formControlName="password" [ngClass]="{
+                'is-invalid': submitted && f['password']?.errors
+              }" />
+          <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+            type="button" id="password-addon">
+            <i class="mdi align-middle" [ngClass]="{
+                  'mdi-eye-off-outline': !fieldTextType,
+                  'mdi-eye-outline': fieldTextType
+                }" (click)="toggleFieldTextType()"></i>
+          </button>
+          @if (submitted && f['password']?.errors) {
+          <div class="invalid-feedback">
+            @if(f['password']?.errors['required']){
+            <span>Password is required</span>
+            }
+          </div>
+          }
+        </div>
+      </div>
+ 
+      <div class="mt-4">
+        <button class="btn bg-normal text-white w-100 text-upper ls-1" type="submit">
+          Login
+        </button>
+      </div>
+   <div class="float-end mb-2 mt-2">
+          <a routerLink="/password-reset" class="text-muted">Forgot password?</a>
+        </div>
+    </form>
+  </div>
+</div>

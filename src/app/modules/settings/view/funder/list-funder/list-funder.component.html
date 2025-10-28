@@ -1,0 +1,37 @@
+<app-headings [title]="title" [useBackButton]="true"></app-headings>
+
+<div class="card">
+  <div class="card-body">
+    <app-data-table
+      [columnHeader]="tableColumns"
+      [hasActionsColumn]="true"
+      [tableData]="funderList"
+    >
+  <ng-template #actions let-data="data">
+        <app-actions-menu>
+          <app-actions-button
+            [btnIcon]="'edit'"
+            [btnText]="'Edit'"
+            (click)="edit(data)"
+          >
+          </app-actions-button>
+           <app-actions-button
+            [btnIcon]="'delete'"
+            [btnText]="'Delete'"
+            (click)="remove(data)"
+          >
+          </app-actions-button>
+
+        </app-actions-menu>
+      </ng-template> 
+
+      <div class="contents" toolbar-content>
+        <app-button
+          (clicked)="add()"
+          buttonName="Add New Funder"
+          _icon="ri-add-line align-bottom me-1"
+        ></app-button>
+      </div>
+    </app-data-table>
+  </div>
+</div>

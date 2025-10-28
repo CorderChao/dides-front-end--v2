@@ -1,0 +1,14 @@
+<router-outlet></router-outlet>
+
+<!--<ngx-http-loader [loader]="loader.ELLIPSIS" [opacity]="0.8" [backdropBackgroundColor]="'#EBEBEBD3'"-->
+<!--                 [iconColor]="'#808080'">-->
+<!--</ngx-http-loader>-->
+<ng-http-loader 
+  [backdrop]="true"
+  [backgroundColor]="'#808080'"
+  [debounceDelay]="200"
+  [extraDuration]="300"
+  [minDuration]="500"
+  [opacity]= opacity
+  [spinner]="spinkit.skThreeBounce">
+</ng-http-loader>

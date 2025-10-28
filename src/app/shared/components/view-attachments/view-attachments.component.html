@@ -1,0 +1,24 @@
+<div class="p-3">
+    <!-- <app-modal-header [title]="title" (closeModal)="closeThisModal($event)"></app-modal-header> -->
+  
+    <div *ngIf="data.file">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="full-height" *ngIf="fileType === 'pdf'">
+            <object [data]="base64 | safeResource" width="100%" height="100%" title="Attachment"></object>
+          </div>
+          <div class="full-height-img" *ngIf="fileType === 'image'">
+            <img [src]="base64" alt="Attachment Image" width="100%" height="100%" />
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="no-file" *ngIf="!(data.file)">
+      <div class="row">
+        <div class="col-md-12 p-4">
+          <div class="no-file">No Attachment</div>
+        </div>
+      </div>
+    </div>
+</div>
